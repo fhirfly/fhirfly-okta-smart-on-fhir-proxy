@@ -29,10 +29,10 @@ async function writeRefreshCache(refreshObject) {
 		patient_id: refreshObject.patient_id,
 		expires: (Math.floor(Date.now() / 1000) + (process.env.CACHE_TTL_MINS * 60))
 	}};
-    const ttl = Number.parseInt(data.ttl);
+    const ttl = process.env.CACHE_TTL_MINS;
     const ciphertext = (data.ciphertext || '').replace(/[^a-zA-Z0-9\-]*/g, '');
     const created = new Date().getTime();
-	
+
 	return firestore.collection(process.env.CACHE_TABLE_NAME)
       .add({ token, ttl, ciphertext })
       .then(doc => {
