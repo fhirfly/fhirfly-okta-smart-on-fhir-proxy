@@ -1,9 +1,9 @@
 'use strict';
-const metadataLib = require('../lib/metadata_endpoints')
+const metadataLib = require('../lib/metadata_endpoints');
 
 //Metadata endpoints - GCP Lambda Interface
 //See the metadata library for more detail.
-smartConfigHandler = async (req, res) => {
+exports.smartConfigHandler = async (req, res) => {
 	var smartConfigResult = await metadataLib.smartConfigHandler()
 	res.send( {
 		statusCode: 200,
@@ -12,7 +12,7 @@ smartConfigHandler = async (req, res) => {
 	)
 }
 
-metadataHandler = async (req, res) => {
+exports.metadataHandler = async (req, res) => {
 	var metadataResult = await metadataLib.metadataHandler()
 	res.send( {
 		statusCode: 200,

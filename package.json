@@ -13,6 +13,7 @@
     "./token": "./gcp/metadata_endpoints.js"
   },
   "dependencies": {
+    "@google-cloud/firestore": "4.9.8",
     "@google-cloud/functions-framework": "^1.7.1",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",

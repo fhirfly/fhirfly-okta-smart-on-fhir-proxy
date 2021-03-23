@@ -1,14 +1,11 @@
 'use strict';
 const tokenHookLib = require('../lib/token_hook')
-const GCP = require('GCP-sdk');
-GCP.config.update({
-	region: process.env.GCP_REGION
-})
-const dynamoDB = new GCP.DocumentClient()
+const Firestore = require('@google-cloud/firestore');
+const PROJECTID = 'fhirfly';
 
 //Token hook - GCP interface.
 //See the token hook library for full documentation.
-tokenHookHandler = async (req, res) => {
+exports.tokenHookHandler = async (req, res) => {
 	try {
 		var cachedPatientId = await get_refresh_cached_patient_id(JSON.parse(req.body))
 		var tokenHookResult = await tokenHookLib.tokenHookHandler(req.body, cachedPatientId)
@@ -44,14 +41,26 @@ async function get_refresh_cached_patient_id(requestBodyObject) {
 			}
 		};
 
-		var result = await dynamoDB.get(params).promise()
-		console.log(result)
-		if(result.Item) {
-			res.send( result.Item.patient_id)
-		}
-		else {
-			res.send( null )
-		}
+		// read/retrieve an existing document by id
+			if (!(refreshTokenId)) {
+				res.send( null );
+			}
+			if (!(refreshTokenId && refreshTokenId.length)) {
+				res.send( null );
+			}
+			return firestore.collection(process.env.CACHE_TABLE_NAME)
+				.doc(refreshTokenId)
+				.get()
+				.then(doc => {
+				if (!(doc && doc.exists)) {
+					res.send( null );
+				}
+				const data = doc.data();
+				return res.send(data.Item.patient_id);
+				}).catch(err => {
+				console.error(err);
+				res.send( null );
+				});
 	}
 	else {
 		res.send( null )

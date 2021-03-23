@@ -1,7 +1,7 @@
 'use strict';
 const patientPickerLib = require('../lib/patient_picker')
 
-patientPickerGetHandler = async (req, res) => {
+exports.patientPickerGetHandler = async (req, res) => {
 	var getResult = await patientPickerLib.getHandler(req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
 	res.send( {
 		statusCode: getResult.statusCode,
@@ -12,7 +12,7 @@ patientPickerGetHandler = async (req, res) => {
 	})
 }
 
-patientPickerPostHandler = async (req, res) => {
+exports.patientPickerPostHandler = async (req, res) => {
 	var postResult = await patientPickerLib.postHandler(req.body, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
 	res.send( {
 		statusCode: postResult.statusCode,

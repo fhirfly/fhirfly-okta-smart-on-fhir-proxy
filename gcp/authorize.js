@@ -1,9 +1,9 @@
 'use strict';
-const authorizeLib = require('../lib/authorize')
+const authorizeLib = require('../lib/authorize');
 
 //Authorize endpoint - GCP implementation.
 //See the authorize library for full details.
-authorizeHandler = async (req, res) => {
+exports.authorizeHandler = async (req, res) => {
 	var authorizeResult = await authorizeLib.authorizeHandler(req.queryStringParameters)
 	res.send( {
 		statusCode: authorizeResult.statusCode,
@@ -24,7 +24,7 @@ authorizeHandler = async (req, res) => {
 //Patient picker/custom consent screen OIDC callback endpoint - GCP implementation.
 //See the authorize library for full details.
 //This endpoint should be moved over to the patient picker module.
-pickerCallbackHandler = async (req, res) => {
+exports.pickerCallbackHandler = async (req, res) => {
 	var pickerCallbackResult = await authorizeLib.pickerCallbackHandler(req.queryStringParameters, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
 	res.send( {
 		statusCode: pickerCallbackResult.statusCode,

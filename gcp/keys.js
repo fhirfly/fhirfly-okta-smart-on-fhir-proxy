@@ -3,7 +3,7 @@ const keysLib = require('../lib/keys')
 
 //Keys endpoint - GCP Lambda Implementation.
 //See keys library for documentation.
-keysHandler = async (req, res) => {
+exports.keysHandler = async (req, res) => {
 	var keysResult = await keysLib.keysHandler()
 	res.send( {
 		statusCode: 200,
