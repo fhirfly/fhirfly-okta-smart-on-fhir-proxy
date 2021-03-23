@@ -1,0 +1,19 @@
+const authorize = require('./authorize');
+const keys = require('./keys');
+const metadata_endpoints = require('./metadata_endpoints');
+const mock_patient_service = require('./mock_patient_service');
+const patient_picker = require('./patient_picker');
+const token_hook = require('./token_hook');
+const token = require('./token');
+
+exports.authorizeHandler = authorize.authorizeHandler;
+exports.pickerCallbackHandler = authorize.pickerCallbackHandler;
+exports.authorizeCallbackHandler = authorize.authorizeCallbackHandler;
+exports.keysHandler = keys.keysHandler;
+exports.smartConfigHandler = metadata_endpoints.smartConfigHandler;
+exports.metadataHandler = metadata_endpoints.metadataHandler;
+exports.mockPatientServiceHandler = mock_patient_service.mockPatientServiceHandler;
+exports.patientPickerGetHandler = patient_picker.patientPickerGetHandler;
+exports.patientPickerPostHandler = patient_picker.patientPickerPostHandler;
+exports.tokenHookHandler = token_hook.tokenHookHandler;
+exports.tokenHandler = token.tokenHandler;

@@ -1,0 +1,4 @@
+#!include:.gitignore
+# Do not ignore built (or dist) folder for gcloud:
+!/built
+!/dist
