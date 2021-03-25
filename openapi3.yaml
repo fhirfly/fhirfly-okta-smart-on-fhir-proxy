@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  title: SMART on FHIR Authentication API
+  description: >
+    Implementation of SMART on FHIR [OAuth 2.0](https://tools.ietf.org/html/rfc6749  "Docs")
+    with Authorization Code Grant type
+  version: 1.0.0-oas3
+paths:
+  /.well-known/smart-configuration:
+    get:
+      summary: Smart on FHIR Discovery
+      operationId: smart-config
+      responses:
+        '200':
+          description: Metadata for SMART on FHIR configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartConfiguration'
+              examples:
+                response:
+                  value: |-
+                          {"authorization_endpoint":"https://smart.fhirfly.io/authorize",
+                          "token_endpoint":"https://smart.fhirfly.io/token",
+                          "token_endpoint_auth_methods_supported":["client_secret_basic"],
+                          "registration_endpoint":"https://auth.fhirfly.io/oauth2/v1/clients",
+                          "scopes_supported":["openid",
+                                              "profile",
+                                              "launch",
+                                              "launch/patient",
+                                              "patient/*.*",
+                                              "user/*.*",
+                                              "offline_access",
+                                              "launch-standalone",
+                                              "context-standalone-patient",
+                                              "permission-offline",
+                                              "permission-patient"],
+                            "response_types_supported":["code","code id_token","id_token","refresh_token"],
+                            "introspection_endpoint":"https://auth.fhirfly.io/oauth2/ausbf97i2SNvxbrEW5d6/v1/introspect",
+                            "revocation_endpoint":"https://auth.fhirfly.io/oauth2/ausbf97i2SNvxbrEW5d6/v1/revoke",
+                            "capabilities":["launch-ehr",
+                                            "client-public",
+                                            "client-confidential-symmetric",
+                                            "context-ehr-patient",
+                                            "sso-openid-connect"]
+                            }
+  /authorize:
+    get:
+      summary: Authentication Endpoint
+      operationId: auth
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - code
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+        - name: state
+          in: query
+          schema:
+            type: string
+      tags:
+        - oauth2
+      responses:
+        '302':
+          description: Redirect to OAuth provider
+  /token:
+    post:
+      summary: Request Access Token
+      operationId: getToken
+      description: |
+        Partner makes a request to the token endpoint by adding the
+        following parameters described below
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  description: Value MUST be set to "authorization_code" as per RFC
+                  type: string
+                  enum:
+                    - authorization_code
+                code:
+                  description: >
+                    The code received in the query string when redirected from
+                    authorization
+
+                    page
+                  type: string
+              required:
+                - grant_type
+                - code
+        required: true
+      tags:
+        - oauth2
+      responses:
+        '200':
+          description: Authorisation token (Bearer)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+              examples:
+                response:
+                  value: |-
+                    {
+                       "access_token": "ACCESS_TOKEN",
+                       "token_type": "Bearer",
+                       "expires_in": 3600,
+                       "patient": Patient/12345,
+                       "id_token" : "ID_TOKEN",
+                     }
+        '400':
+          description: As per RFC authorisation server responds with 400 in case of error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                response:
+                  value: |-
+                    {
+                      "error":"invalid_request"
+                    }
+  
+servers:
+  - url: https://api.fhirfly.io'
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The access token value
+        id_token:
+          type: string
+          description: The id token value
+        patient:
+          type: string
+          description: The patient context
+        token_type:
+          type: string
+          enum:
+            - Bearer
+          description: Type of the token is set to "Bearer"
+        expires_in:
+          type: integer
+          format: int32
+          description: The lifetime in seconds of the access token
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - invalid_request
+            - invalid_client
+            - invalid_grant
+            - unauthorized_client
+            - unsupported_grant_type
+        error_description:
+          type: string
+          description: Human-readable text providing additional information
+        error_uri:
+          type: string
+          description: >-
+            A URI identifying a human-readable web page with information about
+            the error
