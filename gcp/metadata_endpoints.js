@@ -5,18 +5,10 @@ const metadataLib = require('../lib/metadata_endpoints');
 //See the metadata library for more detail.
 exports.smartConfigHandler = async (req, res) => {
 	var smartConfigResult = await metadataLib.smartConfigHandler()
-	res.send( {
-		statusCode: 200,
-		body: JSON.stringify(smartConfigResult)
-	}
-	)
+	res.send( smartConfigResult);
 }
 
 exports.metadataHandler = async (req, res) => {
 	var metadataResult = await metadataLib.metadataHandler()
-	res.send( {
-		statusCode: 200,
-		body: JSON.stringify(metadataResult)
-	}
-	)
+	res.send( metadataResult);
 }

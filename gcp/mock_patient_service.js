@@ -5,8 +5,6 @@ const mockPatientLib = require('../lib/mock_patient_service')
 // For more detail see the mock patient library.
 exports.mockPatientServiceHandler = async (req, res) => {
 	var mockPatientResult = await mockPatientLib.mockPatientServiceHandler()
-	res.send(  {
-		statusCode: 200,
-		body: JSON.stringify(mockPatientResult)
-	})
+	res.status = 200;
+	res.send(mockPatientResult);
 }

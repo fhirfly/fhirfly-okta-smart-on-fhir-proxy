@@ -14,11 +14,12 @@ exports.tokenHandler = async (req, res) => {
 	if(handlerResponse.refreshCacheObject) {
 		await writeRefreshCache(handlerResponse.refreshCacheObject)
 	}
-	res.send( {
-		statusCode: handlerResponse.statusCode,
-		body: JSON.stringify(handlerResponse.body),
-		headers: {"Cache-Control": "no-store", "Pragma": "no-cache"}
-	})
+	res.status = handlerResponse.statusCode;
+	res.setHeader('Content-Type', 'application/json');
+	res.setHeader('Location', pickerCallbackResult.location);
+	res.setHeader('Cache-Control', "no-store");
+	res.setHeader('Pragma', "no-cache");
+	res.send(handlerResponse.body);
 }
 
 async function writeRefreshCache(refreshObject) {
@@ -34,7 +35,7 @@ async function writeRefreshCache(refreshObject) {
     const created = new Date().getTime();
 
 	return firestore.collection(process.env.CACHE_TABLE_NAME)
-      .add({ token, ttl, ciphertext })
+      .add({ token, ttl, ciphertext })  //TODO: check to see if put uses add
       .then(doc => {
         return res.status(200).send(doc);
       }).catch(err => {

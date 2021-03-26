@@ -9,22 +9,18 @@ exports.tokenHookHandler = async (req, res) => {
 	try {
 		var cachedPatientId = await get_refresh_cached_patient_id(JSON.parse(req.body))
 		var tokenHookResult = await tokenHookLib.tokenHookHandler(req.body, cachedPatientId)
-		res.send( {
-			statusCode: tokenHookResult.statusCode,
-			body: JSON.stringify(tokenHookResult.body)
-		})
+		res.status = tokenHookResult.statusCode;
+		res.setHeader('Content-Type', 'application/json');
+		res.send(tokenHookResult.body);
 	}
 	catch(error) {
 		//When a token hook fails, we still want to res.send( a 200 to Okta, with an error message.
 		//In this way, Okta will reject all tokens in the req that our token hook fails.
 		//Most errors are caught at the expected source, but this is a catch-all.
 		console.log(error)
-		res.send( {
-			statusCode: 200,
-			body: JSON.stringify({"error": {
-				errorSummary: "An unexpected error has occurred in the token hook. See the cloud logs for more detail."
-			}})
-		})
+		res.status = 200;
+		res.setHeader('Content-Type', 'application/json');
+		res.send({"error": {errorSummary: "An unexpected error has occurred in the token hook. See the cloud logs for more detail."}});
 	}
 }
 
