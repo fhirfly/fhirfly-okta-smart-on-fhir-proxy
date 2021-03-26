@@ -7,7 +7,7 @@ const PROJECTID = 'fhirfly';
 //See the token hook library for full documentation.
 exports.tokenHookHandler = async (req, res) => {
 	try {
-		var cachedPatientId = await get_refresh_cached_patient_id(JSON.parse(req.body))
+		var cachedPatientId = await get_refresh_cached_patient_id(req.body)
 		var tokenHookResult = await tokenHookLib.tokenHookHandler(req.body, cachedPatientId)
 		res.status = tokenHookResult.statusCode;
 		res.setHeader('Content-Type', 'application/json');

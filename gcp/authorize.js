@@ -4,7 +4,7 @@ const authorizeLib = require('../lib/authorize');
 //Authorize endpoint - GCP implementation.
 //See the authorize library for full details.
 exports.authorizeHandler = async (req, res) => {
-	var authorizeResult = await authorizeLib.authorizeHandler(req.queryStringParameters)
+	var authorizeResult = await authorizeLib.authorizeHandler(req.query)
 	res.status = authorizeResult.statusCode;
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Location', authorizeResult.location);
@@ -19,7 +19,7 @@ exports.authorizeHandler = async (req, res) => {
 //See the authorize library for full details.
 //This endpoint should be moved over to the patient picker module.
 exports.pickerCallbackHandler = async (req, res) => {
-	var pickerCallbackResult = await authorizeLib.pickerCallbackHandler(req.queryStringParameters, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
+	var pickerCallbackResult = await authorizeLib.pickerCallbackHandler(req.query, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
 	res.status = pickerCallbackResult.statusCode;
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Location', pickerCallbackResult.location);
@@ -32,7 +32,7 @@ exports.pickerCallbackHandler = async (req, res) => {
 //Authorize OAuth2 callback proxy endpoint - GCP implementation.
 //See the authorize library for full details.
 exports.authorizeCallbackHandler = async (req, res) => {
-	var authorizeCallbackResult = await authorizeLib.authorizeCallbackHandler(req.queryStringParameters, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
+	var authorizeCallbackResult = await authorizeLib.authorizeCallbackHandler(req.query, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
 	res.status = authorizeCallbackResult.statusCode;
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Location', authorizeCallbackResult.location);
