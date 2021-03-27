@@ -1,7 +1,35 @@
 version: 2.1
 orbs:
-  node: circleci/node@3.0.0
-workflows:
-  node-tests:
-    jobs:
-      - node/test
+   gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
+jobs:
+  build_and_deploy:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - cloudrun/init
+      - cloudrun/build:
+          tag: 'gcr.io/${GOOGLE_PROJECT_ID}/test-${CIRCLE_SHA1}'
+      - cloudrun/deploy:
+          image: 'gcr.io/${GOOGLE_PROJECT_ID}/test-${CIRCLE_SHA1}'
+          platform: managed
+          region: us-east1
+          service-name: example-service
+          unauthenticated: true
+      - run:
+          command: >
+            # A simple example of how a deployed managed service could be
+            verified or further tested.
+
+            # This step will send request our "API" and fail if there is
+            unexpected output.
+
+            GCP_API_RESULTS=$(curl -s "$GCP_DEPLOY_ENDPOINT")
+
+            if [ "$GCP_API_RESULTS" != "Hello World!" ]; then
+              echo "Result is unexpected"
+              echo 'Result: '
+              curl -s "$GCP_DEPLOY_ENDPOINT"
+              exit 1;
+            fi
+          name: Test managed deployed service.
