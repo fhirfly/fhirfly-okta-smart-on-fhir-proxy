@@ -10,7 +10,7 @@ exports.patientPickerGetHandler = async (req, res) => {
 
 exports.patientPickerPostHandler = async (req, res) => {
 	var postResult = await patientPickerLib.postHandler(req.body, req.headers[Object.keys(req.headers).find(key => key.toLowerCase() === 'cookie')])
-	res.status = postResult.statusCode;
+	res.status(postResult.statusCode);
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Location', postResult.location);
 	res.setHeader('Set-Cookie', [

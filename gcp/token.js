@@ -14,9 +14,8 @@ exports.tokenHandler = async (req, res) => {
 	if(handlerResponse.refreshCacheObject) {
 		await writeRefreshCache(handlerResponse.refreshCacheObject)
 	}
-	res.status = handlerResponse.statusCode;
+	res.status(handlerResponse.statusCode);
 	res.setHeader('Content-Type', 'application/json');
-	res.setHeader('Location', pickerCallbackResult.location);
 	res.setHeader('Cache-Control', "no-store");
 	res.setHeader('Pragma', "no-cache");
 	res.send(handlerResponse.body);

@@ -18,7 +18,7 @@ exports.tokenHookHandler = async (req, res) => {
 		//In this way, Okta will reject all tokens in the req that our token hook fails.
 		//Most errors are caught at the expected source, but this is a catch-all.
 		console.log(error)
-		res.status = 200;
+		res.status(200);
 		res.setHeader('Content-Type', 'application/json');
 		res.send({"error": {errorSummary: "An unexpected error has occurred in the token hook. See the cloud logs for more detail."}});
 	}
