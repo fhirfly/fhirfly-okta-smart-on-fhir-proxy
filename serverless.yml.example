@@ -11,9 +11,9 @@ provider:
   name: google
   runtime: nodejs12
   stage: dev
-  region: us-east-1
-  project: <your project>
-  credentials: <your gcp credentials>>
+  region: <yourgpregion>
+  project: <yourgcpprojectid>
+  credentials: <your gcp credentials>
   environment:
   #This variable will contain the live API URL (https://XXXXX.execute-api.us-east-1.amazonaws.com/dev)
   
@@ -25,7 +25,7 @@ provider:
     EXPECTED_AUD_VALUE: https://youroktadomain
     #replace above with final gateway url from AWS (include /sandbox)
     #TODO: Get rid of.
-    API_KEY: 00yomuSAwfdeHoR0GDnF1t5iocUkiifPGbfG7gbJtj
+    API_KEY: <your okta api key>
     
     PICKER_DISPLAY_NAME: <Your Organization Name> Patient Selection
     PICKER_CLIENT_ID: <An Okta client id for the patient picker app>
