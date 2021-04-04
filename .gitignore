@@ -4,6 +4,8 @@ jspm_packages
 
 # Serverless directories
 .serverless
+.vscode
+.keys
 
 serverless.yml
 metadata_files/*.json

@@ -2,7 +2,19 @@
   "name": "okta-smartfhir-auth-demo",
   "description": "",
   "version": "0.1.0",
+  "main": "./gcp/index.js",
+  "exports": {
+    "./authorize": "./gcp/authorize.js",
+    "./keys": "./gcp/keys.js",
+    "./metadata_endpoints": "./gcp/metadata_endpoints.js",
+    "./mock_patient_service": "./gcp/mock_patient_service.js",
+    "./patient_picker": "./gcp/patient_picker.js",
+    "./token_hook": "./gcp/metadata_endpoints.js",
+    "./token": "./gcp/metadata_endpoints.js"
+  },
   "dependencies": {
+    "@google-cloud/firestore": "4.9.8",
+    "@google-cloud/functions-framework": "^1.7.1",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "cookie-signature": "^1.1.0",
@@ -10,10 +22,12 @@
     "njwt": "^1.0.0",
     "nunjucks": "^3.2.2",
     "pem-jwk": "^2.0.0",
+    "serverless-google-cloudfunctions": "^3.1.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "serverless": "^1.83.2",
     "serverless-apigateway-service-proxy": "^1.10.0",
-    "serverless": "^1.73.1"
+    "serverless-google-cloudfunctions": "*"
   }
 }

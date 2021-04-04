@@ -1,0 +1,32 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+    - deploy
+      - okta-smartfhir-auth-dev-metadata-endpoint
+        - --region=us-central1
+        - --source=./gcp/metadata_endpoint.js
+        - --trigger-http
+      - okta-smartfhir-auth-dev-keys_endpoint
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-metadata-endpoint	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-mock_patient_service	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-patient_picker_get	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-patient_picker_post	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-picker-oidc-callback
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-smart-authorize-proxy	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-smart-config-endpoint	
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-smart-proxy-callback
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-smart-token-proxy
+        - --region=us-central1
+      - okta-smartfhir-auth-dev-token_hook
+        - --region=us-central1
