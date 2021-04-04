@@ -10,7 +10,7 @@ const firestore = new Firestore({
 //Token proxy - GCP implementation.
 //See the token library for full documentation.
 exports.tokenHandler = async (req, res) => {
-	var handlerResponse = await tokenLib.tokenHandler(req.body, req.headers)
+	var handlerResponse = await tokenLib.tokenHandler(JSON.stringify(req.body), req.headers)
 	if(handlerResponse.refreshCacheObject) {
 		await writeRefreshCache(handlerResponse.refreshCacheObject)
 	}
@@ -34,12 +34,12 @@ async function writeRefreshCache(refreshObject) {
     const created = new Date().getTime();
 
 	return firestore.collection(process.env.CACHE_TABLE_NAME)
-      .add({ token, ttl, ciphertext })  //TODO: check to see if put uses add
+      .add({ data, ttl, ciphertext })  //TODO: check to see if put uses add
       .then(doc => {
-        return res.status(200).send(doc);
+        return ;
       }).catch(err => {
         console.error(err);
-        return res.status(404).send({ error: 'unable to store', err });
+        return ;
       });
 }
 	
