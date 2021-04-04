@@ -2,14 +2,17 @@
 const tokenHookLib = require('../lib/token_hook')
 const Firestore = require('@google-cloud/firestore');
 const PROJECTID = 'fhirfly';
-
+const firestore = new Firestore({
+	projectId: PROJECTID,
+	timestampsInSnapshots: true,
+  });
 //Token hook - GCP interface.
 //See the token hook library for full documentation.
 exports.tokenHookHandler = async (req, res) => {
 	try {
-		var cachedPatientId = await get_refresh_cached_patient_id(req.body)
-		var tokenHookResult = await tokenHookLib.tokenHookHandler(req.body, cachedPatientId)
-		res.status = tokenHookResult.statusCode;
+		var cachedPatientId = await get_refresh_cached_patient_id(JSON.parse(JSON.stringify(req.body)), res)
+		var tokenHookResult = await tokenHookLib.tokenHookHandler(JSON.stringify(req.body), cachedPatientId)
+		res.status(tokenHookResult.statusCode);
 		res.setHeader('Content-Type', 'application/json');
 		res.send(tokenHookResult.body);
 	}
@@ -25,7 +28,7 @@ exports.tokenHookHandler = async (req, res) => {
 }
 
 //This method, if we're in the middle of an access token refresh, will get the cached patient_id, if applicable.
-async function get_refresh_cached_patient_id(requestBodyObject) {
+async function get_refresh_cached_patient_id(requestBodyObject, res) {
 	if(requestBodyObject.source.endsWith('/token')) {
 		var refreshTokenId = requestBodyObject.data.context.protocol.originalGrant.refresh_token.jti;
 		console.log('Getting refresh object from database...')
@@ -39,27 +42,30 @@ async function get_refresh_cached_patient_id(requestBodyObject) {
 
 		// read/retrieve an existing document by id
 			if (!(refreshTokenId)) {
-				res.send( null );
+				console.log("No refresh token found")
+				return null;
 			}
 			if (!(refreshTokenId && refreshTokenId.length)) {
-				res.send( null );
+				console.log("No refresh token found")
+				return null;
 			}
 			return firestore.collection(process.env.CACHE_TABLE_NAME)
 				.doc(refreshTokenId)
 				.get()
 				.then(doc => {
 				if (!(doc && doc.exists)) {
-					res.send( null );
+					console.log("no refresh token found in cache")
+					return null;
 				}
 				const data = doc.data();
-				return res.send(data.Item.patient_id);
+				return data.Item.patient_id;
 				}).catch(err => {
 				console.error(err);
-				res.send( null );
+				return null;
 				});
 	}
 	else {
-		res.send( null )
+		return null;
 	}
 	
 }
