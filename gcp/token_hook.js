@@ -33,30 +33,36 @@ async function get_refresh_cached_patient_id(requestBodyObject, res) {
 		var refreshTokenId = requestBodyObject.data.context.protocol.originalGrant.refresh_token.jti;
 		console.log('Getting refresh object from database...')
 		console.log('Refresh token id:' + refreshTokenId)
+		var params = {
+			TableName: process.env.CACHE_TABLE_NAME,
+			Key: {
+				token_id: refreshTokenId
+			}
+		};
 
 		// read/retrieve an existing document by id
-		if (!(refreshTokenId)) {
-			console.log("No refresh token found")
-			return null;
-		}
-		if (!(refreshTokenId && refreshTokenId.length)) {
-			console.log("No refresh token found")
-			return null;
-		}
-		return firestore.collection(process.env.CACHE_TABLE_NAME)
-			.doc(refreshTokenId)
-			.get()
-			.then(doc => {
-			if (!(doc && doc.exists)) {
-				console.log("no refresh token found in cache")
+			if (!(refreshTokenId)) {
+				console.log("No refresh token found")
 				return null;
 			}
-			const data = doc.data();
-			return data.Item.patient_id;
-			}).catch(err => {
-			console.error(err);
-			return null;
-			});
+			if (!(refreshTokenId && refreshTokenId.length)) {
+				console.log("No refresh token found")
+				return null;
+			}
+			return firestore.collection(process.env.CACHE_TABLE_NAME)
+				.doc(refreshTokenId)
+				.get()
+				.then(doc => {
+				if (!(doc && doc.exists)) {
+					console.log("no refresh token found in cache")
+					return null;
+				}
+				const data = doc.data();
+				return data.Item.patient_id;
+				}).catch(err => {
+				console.error(err);
+				return null;
+				});
 	}
 	else {
 		return null;
