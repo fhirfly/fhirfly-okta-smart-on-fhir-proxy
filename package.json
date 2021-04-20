@@ -1,5 +1,5 @@
 {
-  "name": "okta-smartfhir-auth-demo",
+  "name": "fhirfly-smartonfhir",
   "description": "",
   "version": "0.1.0",
   "main": "./gcp/index.js",
