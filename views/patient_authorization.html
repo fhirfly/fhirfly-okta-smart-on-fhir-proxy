@@ -1,68 +1,70 @@
-<html>
-  <head>
-	<link rel="stylesheet" href="https://s3.amazonaws.com/okta.demo.smartfhir/style.css">
-    <script src="https://use.fontawesome.com/421188abd5.js"></script>
-  </head>
-  <body>
-    <div id="consent_body">
-      <form method="POST" action="{{ gateway_url }}/patient_authorization" enctype='application/x-www-form-urlencoded'>
-        <div id="consent_logo_header">
-          <div>
-            <!-- App logo here -->
-            <img src="{{ app_icon }}"></img>
-          </div>
-          <div class="arrow">
-            <!-- Arrows icon here -->
-            <i class="fa fa-arrows-h fa-4x" aria-hidden="true"></i>
-          </div>
-          <div>
-            <!-- Okta Icon here-->
-            <img src="https://s3.amazonaws.com/okta.demo.smartfhir/oktains_logo.png"></img>
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FHIRFLY</title>
+    <link rel="stylesheet" href="https://fhirfly.app/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+  <div class="container-div text_center">
+    <form method="POST" action="{{ gateway_url }}/patient_authorization" enctype='application/x-www-form-urlencoded'>
+        <div class="top-div">
+		        <img src="{{ app_icon }}" width="95"></img>            
+            <img src="https://fhirfly.app/assets/img/2.png" alt="img" width="95" class="arrow" />
+            <img src="https://fhirfly.app/assets/img/3.png" alt="img" width="95" />
         </div>
-        <div id="consent_app_names">
-            <h2>
-              Connect {{ app_name }} to your Oktaprise Insurance Account
-            </h2>
-            <h3>
-              Allow {{ app_name }} to access:
-            </h3>
-        </div>
-        <div id="consent_scopes">
-          {% for scope in scopes %}
-            {% if scope.consent == 'REQUIRED' %}
-              <div class="list_item">
-            {% else %}
-              <div class="list_item" style="display:none;">
-            {% endif %}   
-                <input type="checkbox" name="scopes" value="{{ scope.name }}" id="{{ scope.name }}" checked="true">
-                <label for="{{ scope.name }}">{{ scope.displayName }}</label>
-              </div>
-    
-          {% endfor %}
-        </div>
-
-        {% if show_patient_picker %}
-          <div id="consent_patient_header">
-            <h3>
-              Whose record do you want to allow access to?
-            </h3>
-          </div>
-          <div id="consent_patients">
-              {% for patient in patients %}
+        <h2 class="text_center">Connect {{ app_name }} to your Glowing Health Account</h2>
+        <p class="text_center">Allow {{ app_name }} to access:</p>
+        <p>
+          <div id="consent_scopes">
+            {% for scope in scopes %}
+              {% if scope.consent == 'REQUIRED' %}
                 <div class="list_item">
-                  <input type="radio" id="{{ patient.patient_id }}" name="patient" value="{{ patient.patient_id }}">
-                  <label for="{{ patient.patient_id}}">{{ patient.patient_name }}</label>
-                </div>
+              {% else %}
+                <div class="list_item" style="display:none;">
+              {% endif %}   
+                  <input type="checkbox" name="scopes" value="{{ scope.name }}" id="{{ scope.name }}" checked="true">
+                  <label for="{{ scope.name }}">{{ scope.displayName }}</label>
+                </div>    
+            {% endfor %}
+          </div>
+        </p>
+        {% if show_patient_picker %}
+          <div>
+            <div id="consent_patient_header">
+              <p class="text_center">Whose record do you want to allow access to?</p>
+            </div>      
+            <ul class="my-list">
+              {% for patient in patients %}
+               <li>
+			            <img src="https://fhirfly.app/assets/img/t1.jpg" alt="img" class="img-resp" id="t{{ loop.index }}" />
+                  <img src="https://fhirfly.app/assets/img/check.png" alt="img" class="check" id="c{{ loop.index }}" />
+                  <h4><label for="{{ patient.patient_id}}">{{ patient.patient_name }}</label></h4>
+               </li>
               {% endfor %}
           </div>
         {% endif %}
-
-        <button type="submit">
-          Approve
-        </button>
-    
-      </form>
-    </div>
-  </body>
+        <input type="submit" value="Approve" class="approve-btn" />
+    </form>
+  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $("#t2").click(function () {
+            $("#c1").hide();
+            $("#c2").show();
+            $("#c3").hide();
+        });
+        $("#t3").click(function () {
+            $("#c1").hide();
+            $("#c2").hide();
+            $("#c3").show();
+        });
+        $("#t1").click(function () {
+            $("#c1").show();
+            $("#c2").hide();
+            $("#c3").hide();
+        });
+    </script>
+</body>
 </html>
