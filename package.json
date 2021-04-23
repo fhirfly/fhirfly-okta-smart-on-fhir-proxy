@@ -7,7 +7,7 @@
     "./authorize": "./gcp/authorize.js",
     "./keys": "./gcp/keys.js",
     "./metadata_endpoints": "./gcp/metadata_endpoints.js",
-    "./mock_patient_service": "./gcp/mock_patient_service.js",
+    "./patient_service": "./gcp/patient_service.js",
     "./patient_picker": "./gcp/patient_picker.js",
     "./token_hook": "./gcp/metadata_endpoints.js",
     "./token": "./gcp/metadata_endpoints.js"

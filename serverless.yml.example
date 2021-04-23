@@ -115,8 +115,8 @@ functions:
       - http: /tokenhook
          
  
- ##MOCK PATIENT API 
-  mock_patient_service:
-    handler: mockPatientServiceHandler
+ ##PATIENT CONSENT API 
+  patient_service:
+    handler: PatientServiceHandler
     events:
-      - http: /patientMockService
+      - http: /patientService
