@@ -1,7 +1,7 @@
 'use strict';
 const tokenHookLib = require('../lib/token_hook')
 const Firestore = require('@google-cloud/firestore');
-const PROJECTID = 'fhirfly';
+const PROJECTID = 'fhirfly-prod';
 const firestore = new Firestore({
 	projectId: PROJECTID,
 	timestampsInSnapshots: true,

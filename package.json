@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@google-cloud/firestore": "4.9.8",
+    "@google-cloud/secret-manager": "^3.6.0",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "cookie-signature": "^1.1.0",
@@ -22,6 +23,7 @@
     "express": "^4.18.2",
     "googleapis": "^50.0.0",
     "njwt": "^1.0.0",
+    "node-cache": "^5.1.2",
     "nunjucks": "^3.2.2",
     "pem-jwk": "^2.0.0",
     "url": "^0.11.0",
