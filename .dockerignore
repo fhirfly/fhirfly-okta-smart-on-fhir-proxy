@@ -1,0 +1,10 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.vscode
+.keys
+
+metadata_files/*.json
+*.bat
