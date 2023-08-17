@@ -16,11 +16,11 @@ FROM base as build
 # Install packages needed to build node modules
 # Install node modules
 
-COPY --link package.json package-lock.json .env .
+COPY package.json package-lock.json .env /app/
 RUN npm install
 
 # Copy application code
-COPY --link . .
+COPY . /app
 
 # Final stage for app image
 #FROM base
