@@ -3,11 +3,11 @@ node_modules
 jspm_packages
 
 # Serverless directories
-.serverless
 .vscode
 .keys
 
-serverless.yml
 metadata_files/*.json
-
+.env
 *.pem
+*.jwks
+*.bat

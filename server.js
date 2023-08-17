@@ -1,8 +1,9 @@
 const smart = require('./gcp/index');
-
 const express = require('express');
 const app = express();
-
+require('dotenv').config();
+// Middleware to parse application/x-www-form-urlencoded data
+app.use(express.urlencoded({ extended: true }));
 // METADATA ENDPOINTS
 app.get('/.well-known/smart-configuration', smart.smartConfigHandler);
 app.get('/keys', smart.keysHandler);
@@ -13,7 +14,7 @@ app.get('/picker_oidc_callback', smart.pickerCallbackHandler);
 app.get('/smart_proxy_callback', smart.authorizeCallbackHandler);
 
 // TOKEN ENDPOINT
-app.get('/token', smart.tokenHandler);
+app.post('/token', smart.tokenHandler);
 
 // PATIENT PICKER UI
 app.get('/patient_authorization', smart.patientPickerGetHandler);
