@@ -10,7 +10,7 @@ exports.patientPickerGetHandler = async (req, res) => {
 		res.send(getResult.body);
 	}
 	catch(e){
-		res.send(400);
+		res.sendStatus(400);
 	}
 }
 
@@ -28,7 +28,7 @@ exports.patientPickerPostHandler = async (req, res) => {
 		res.send(postResult.body);
 	}
 	catch(e){
-		res.send(400)
+		res.sendStatus(400)
 	}
 }
 
