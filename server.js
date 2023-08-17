@@ -1,4 +1,4 @@
-const smart = require('./gcp/index');
+const smart = require('./core/index');
 const express = require('express');
 const app = express();
 require('dotenv').config();
